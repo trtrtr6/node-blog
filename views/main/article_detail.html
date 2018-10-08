@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, minimum-scale=1, maximum-scale=1">
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="shortcut icon" href="/public/images/favicon.ico">
+    <link rel="stylesheet" href="/public/css/semantic.min.css">
+    <link rel="stylesheet" href="/public/css/github-markdown.css">
+    <link rel="stylesheet" href="/public/css/prism.css">
+</head>
+<style>
+    .head-div{
+        padding:10px;
+    }
+    .main-div{
+        position: relative;
+    }
+    .main-div .main-info{
+        padding:10px;
+        display: -webkit-box;/*旧版本，ios6-，Safari 3.1-6*/
+        display: -moz-box;/*旧版本，Firefox 19-*/
+        display: -ms-flexbox;/*混合版本，IE10*/
+        display: -webkit-flex;/*新版本：Chrome*/
+        display: flex;/*新版本：Opera 12.1,Firefox 20+*/
+    }
+    .right-div{
+        width:260px;
+        padding:0px 0px 0px 20px;
+    }
+    .login,.register,.user-info{
+        margin-bottom: 10px;
+    }
+    .right-div .ui.form{
+        padding:10px;
+    }
+    .main-div .ui.card{
+        height:100%;
+        /*设置伸缩性*/
+        -webkit-box-flex: 1;
+        -moz-box-flex: 1;
+        -ms-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+    }
+    .form-button{
+        height:40px;
+        line-height: 40px;
+    }
+    .form-button a{
+        display: inline-block;
+        padding-left: 10px;
+        width:142px;
+    }
+    .user-info .ui.right.floated.image{
+        margin-bottom: 0.2em;
+        margin-left: 0em;
+        width:50px;
+    }
+    .ui.card.main-content{
+        padding:1em;
+    }
+    .ui.card.main-content .my-content{
+        width:100%;
+        box-shadow:0 0px 0px 0 #d4d4d5, 0 0 0 0px #d4d4d5;
+    }
+    .right.menu .loginOutBtn{
+        color:rgba(0,0,0,.6);
+    }
+    .ui.secondary.pointing.menu .right.menu .loginBtn{
+        color:rgba(0,0,0,.6);
+        display:none;
+    }
+    @media screen and (max-width:600px){
+        .right-div{
+            display:none;
+        }
+        .ui.secondary.pointing.menu a:nth-child(n+4){
+            display:none;
+        }
+        .ui.secondary.pointing.menu .right.menu .loginBtn{
+            display:block;
+        }
+    }
+    .ui.comments .response.form{
+        margin: 0 0 .5em .5em;
+        padding: 0.5em 0 1em 1em;
+        display: none;
+    }
+    .ui.comments .response.form textarea{
+        font-size: 1em;
+        min-height: 3em;
+        height: 6em;
+    }
+    .add_response{
+        padding-top: 0.4em;
+    }
+    .nav-setting {
+        position: absolute;
+        right: 280px;
+        top: 25px;
+        z-index: 999;
+    }
+    .nav-setting .ui.dropdown.button {
+        padding: 10px 10px 0 10px;
+        background-color: #fff !important;
+    }
+
+    .nav-setting .icon.bars {
+        color: #000;
+        font-size: 18px;
+    }
+</style>
+<body>
+<div class="ui container">
+    <%- include('header.html') %>
+    <div class="main-div">
+        <%- include('menu-setting.html') %>
+        <div class="main-info">
+            <div class="ui card main-content">
+                <div class="ui card my-content">
+                    <div class="content">
+                        <div class="header"><%=article.title%></div>
+                        <div class="meta">
+                            <span class="cinema"><%=dateFormat(article.createTime)%></span>
+                            <span class="cinema"><%=article._user.username%></span>
+                        </div>
+                        <div class="description markdown-body">
+                            <%-marked(article.content)%>
+                            <!--<p>
+                                Vue.js 是用于构建交互式的 Web 界面的库。它提供了 MVVM 数据绑定和一个可组合的组件系统，
+                                具有简单、灵活的 API。从技术上讲， Vue.js 集中在 MVVM 模式上的视图模型层，并通过双向数据绑定连接视图和模型。
+                                实际的 DOM 操作和输出格式被抽象出来成指令和过滤器。相比其它的 MVVM 框架，Vue.js 更容易上手。
+                            </p>
+                            <p>Vue.js 是一个用于创建 Web 交互界面的库。它让你通过简单而灵活的 API 创建由数据驱动的 UI 组件。</p>
+                            <p>即便您已经熟悉了一些这类的库或框架，我们还是推荐您继续阅读接下来的概览，
+                                因为您对它们的认识也许和它们在 Vue.js 语境下的定义不尽相同。</p>
+                            <p>在用 Vue.js 构建大型应用时推荐使用 NPM 安装，NPM 能很好地和诸如 Webpack
+                                或 Browserify 的 CommonJS 模块打包器配合使用。Vue.js 也提供配套工具来开发单文件组件</p>-->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui comments">
+                    <%if(article._comments.length>0){%>
+                        <h3 class="ui dividing header">评论</h3>
+                    <%}%>
+                    <% article._comments.forEach(function(item){%>
+                    <div class="comment">
+                        <a class="avatar">
+                            <img src="/public/images/matt.jpg">
+                        </a>
+                        <div class="content">
+                            <a class="author"><%=item._user.username%></a>
+                            <div class="metadata">
+                                <span class="date"><%=dateFormat(item.createTime)%></span>
+                            </div>
+                            <div class="text markdown-body">
+                                <%-marked(item.content)%>
+                            </div>
+                            <%if(userInfo._id){%>
+                                <div class="actions res">
+                                    <a class="reply">回复</a>
+                                </div>
+                            <%}%>
+                        </div>
+                        <%if(item._responses.length>0){%>
+                            <div class="comments" style="margin-bottom:0em;padding-bottom:0.5em;">
+                            <%item._responses.forEach(function(response){%>
+                                <div class="comment">
+                                    <a class="avatar">
+                                        <img src="/public/images/matt.jpg">
+                                    </a>
+                                    <div class="content">
+                                        <a class="author"><%=response._user.username%></a>
+                                        <div class="metadata">
+                                            <span class="date"><%=dateFormat(response.createTime)%></span>
+                                        </div>
+                                        <div class="text markdown-body">
+                                            <%-marked(response.content)%>
+                                        </div>
+                                    </div>
+                                </div>
+                            <%})%>
+                            <%if(userInfo._id){%>
+                                <div class="actions add_response">
+                                    <a class="reply">添加回复</a>
+                                </div>
+                            <%}%>
+                            </div>
+                        <%}%>
+                        <form class="ui response form" action="/article_detail/<%=item._id%>/response" method="post">
+                            <div class="field">
+                                <textarea name="response"></textarea>
+                            </div>
+                            <div class="ui blue labeled submit icon button response_submit">
+                                <i class="icon edit"></i> 添加回复
+                            </div>
+                        </form>
+                    </div>
+                    <%})%>
+                    <!--<div class="comment">
+                        <a class="avatar">
+                            <img src="/public/images/matt.jpg">
+                        </a>
+                        <div class="content">
+                            <a class="author">马特</a>
+                            <div class="metadata">
+                                <span class="date">在今天5:42pm</span>
+                            </div>
+                            <div class="text">
+                                怎样的艺术！
+                            </div>
+                            <div class="actions">
+                                <a class="reply">回复</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment">
+                        <a class="avatar">
+                            <img src="/public/images/elliot.jpg">
+                        </a>
+                        <div class="content">
+                            <a class="author">埃利奥特付</a>
+                            <div class="metadata">
+                                <span class="date">在昨天12:30am</span>
+                            </div>
+                            <div class="text">
+                                <p>这对我的调查非常有用。感谢！</p>
+                            </div>
+                            <div class="actions">
+                                <a class="reply">回复</a>
+                            </div>
+                        </div>
+                        <div class="comments" data-id="">
+                            <div class="comment">
+                                <a class="avatar">
+                                    <img src="/public/images/jenny.jpg">
+                                </a>
+                                <div class="content">
+                                    <a class="author">珍妮赫斯</a>
+                                    <div class="metadata">
+                                        <span class="date">刚才</span>
+                                    </div>
+                                    <div class="text">
+                                        埃利奥特你总是这么好 :）
+                                    </div>
+                                    <div class="actions" id="add_response">
+                                        <a class="reply">添加回复</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment">
+                        <a class="avatar">
+                            <img src="/public/images/joe.jpg">
+                        </a>
+                        <div class="content">
+                            <a class="author">乔亨德森</a>
+                            <div class="metadata">
+                                <span class="date">5天前</span>
+                            </div>
+                            <div class="text">
+                                老兄，这是可怕的。太感谢了！
+                            </div>
+                            <div class="actions">
+                                <a class="reply">回复</a>
+                            </div>
+                        </div>
+                    </div>-->
+                    <%if(userInfo._id){%>
+                    <form class="ui reply form" id="comment" action="/article_detail/<%=article._id%>/comment" method="post">
+                        <div class="field">
+                            <textarea name="content"></textarea>
+                        </div>
+                        <div class="ui blue labeled submit icon button" id="comment_submit">
+                            <i class="icon edit"></i> 发布评论
+                        </div>
+                    </form>
+                    <%}%>
+                </div>
+            </div>
+            <%- include('right.html') %>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script src="/public/js/jquery.min.js"></script>
+<script src="/public/js/semantic.min.js"></script>
+<script src="/public/js/layer.js"></script>
+<script src="/public/js/prism.js"></script>
+<script>
+    $("pre").each(function(){
+        $(this).addClass("line-numbers");
+    });
+    // 点击按钮弹出下拉框
+    $('.ui.dropdown').dropdown();
+    $("#loginBtn").click(function(){
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            url:'/api/user/login',
+            data:{
+                username:$("#loginDiv").find('input[name="username"]').val(),
+                password:$("#loginDiv").find('input[name="password"]').val(),
+            },
+            success:function (ret) {
+                console.log(JSON.stringify(ret));
+                if(ret.data.userInfo){
+                    layer.msg('登录成功！');
+                    setTimeout(function(){
+                        window.location.reload();
+                    },300);
+                }
+            }
+        });
+    });
+    $("#regBtn").click(function(){
+        $.ajax({
+            type:'post',
+            url:'/api/user/register',
+            dataType:'json',
+            data:{
+                username:$("#registerDiv").find('input[name="username"]').val(),
+                password:$("#registerDiv").find('input[name="password"]').val(),
+                rePassWord:$("#registerDiv").find('input[name="repassword"]').val()
+            },
+            success:function(ret){
+                console.log(JSON.stringify(ret));
+                if(ret.data.userInfo) {
+                    layer.msg('注册成功，马上上去登录！');
+                    toLogin();
+                }
+            }
+        });
+    })
+    $("#new_article").click(function () {
+        location.href = "/new_article";
+    })
+    $("#comment_submit").click(function(){
+        $.ajax({
+            type:'post',
+            url:$("#comment").attr("action"),
+            data:{
+                content:$("#comment textarea[name='content']").val()
+            },
+            dataType:'json',
+            success:function(ret){
+                layer.msg('评论成功');
+                setTimeout(function(){
+                    window.location.reload();
+                },300);
+            }
+        });
+    })
+    $(".add_response,.res").click(function(){
+        $("form.response").hide();
+        $(this).parent().siblings("form.response").show();
+    });
+    $(".response_submit").click(function(){
+        $.ajax({
+            type:'post',
+            url:$(this).parent().attr("action"),
+            data:{
+                content:$(this).siblings().find("textarea[name='response']").val()
+            },
+            dataType:'json',
+            success:function(ret){
+                layer.msg('评论成功');
+                setTimeout(function(){
+                    window.location.reload();
+                },300);
+            }
+        });
+    })
+    function toLogin(){
+        $("#registerDiv").hide();
+        $("#loginDiv").show();
+    }
+    function toRegister(){
+        $("#registerDiv").show();
+        $("#loginDiv").hide();
+    }
+    function loginOut(){
+        $.ajax({
+            type:'post',
+            url:'/api/user/loginout',
+            dataType:'json',
+            success:function(ret){
+                window.location.reload();
+            }
+        });
+    }
+</script>
+</html>

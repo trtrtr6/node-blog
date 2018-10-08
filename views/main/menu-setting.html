@@ -1,0 +1,13 @@
+<%if(userInfo._id&&userInfo._id==article._user._id){%>
+<div class="nav-setting">
+    <div class="ui buttons">
+        <div class="ui floating dropdown button" tabindex="0">
+            <i class="icon bars"></i>
+            <div class="menu transition hidden" tabindex="-1">
+                <a class="item" href="/edit_article/<%=article._id%>">编辑</a>
+                <a class="item" href="/delete_article">删除</a>
+            </div>
+        </div>
+    </div>
+</div>
+<%}%>

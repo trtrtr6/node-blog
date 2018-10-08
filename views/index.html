@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, minimum-scale=1, maximum-scale=1">
+    <meta charset="UTF-8">
+    <title>Blog</title>
+    <link rel="shortcut icon" href="/public/images/favicon.ico">
+    <link rel="stylesheet" href="/public/css/semantic.min.css">
+    <link rel="stylesheet" href="/public/css/github-markdown.css">
+    <link rel="stylesheet" href="/public/css/prism.css">
+</head>
+<style>
+    .head-div{
+        padding:10px;
+    }
+    .main-div{
+        position: relative;
+    }
+    .main-div .main-info{
+        padding:10px;
+        display: -webkit-box;/*旧版本，ios6-，Safari 3.1-6*/
+        display: -moz-box;/*旧版本，Firefox 19-*/
+        display: -ms-flexbox;/*混合版本，IE10*/
+        display: -webkit-flex;/*新版本：Chrome*/
+        display: flex;/*新版本：Opera 12.1,Firefox 20+*/
+    }
+    .right-div{
+        width:270px;
+        padding:0px 0px 0px 20px;
+    }
+    .login,.register,.user-info{
+        margin-bottom: 10px;
+    }
+    .right-div .ui.form{
+        padding:10px;
+    }
+    .main-div .ui.card{
+        height:100%;
+        /*设置伸缩性*/
+        -webkit-box-flex: 1;
+        -moz-box-flex: 1;
+        -ms-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+    }
+    .form-button{
+        height:40px;
+        line-height: 40px;
+    }
+    .form-button a{
+        display: inline-block;
+        padding-left: 10px;
+        width:150px;
+    }
+    .user-info .ui.right.floated.image{
+        margin-bottom: 0.2em;
+        margin-left: 0em;
+        width:50px;
+    }
+    .ui.card.main-content{
+        box-shadow:0 0px 0px 0 #d4d4d5, 0 0 0 0px #d4d4d5;
+    }
+    .right.menu .loginOutBtn{
+        color:rgba(0,0,0,.6);
+    }
+    .ui.secondary.pointing.menu .right.menu .loginBtn{
+        color:rgba(0,0,0,.6);
+        display:none;
+    }
+    @media screen and (max-width:600px){
+        .right-div{
+            display:none;
+        }
+        .ui.secondary.pointing.menu a:nth-child(n+4){
+            display:none;
+        }
+        .ui.secondary.pointing.menu .right.menu .loginBtn{
+            display:block;
+        }
+    }
+</style>
+<body>
+<div class="ui container">
+    <%- include('./main/header.html') %>
+    <div class="main-div">
+        <div class="main-info">
+            <div class="ui card main-content">
+                <div class="ui divided items">
+                    <% article_list.forEach(function(item){%>
+                        <div class="item" data-id="<%=item._id%>">
+                            <div class="content">
+                                <a class="header"><%=item.title%></a>
+                                <div class="meta">
+                                    <span class="cinema"><%=dateFormat(item.createTime)%></span>
+                                    <span class="cinema"><%=item._user.username%></span>
+                                </div>
+                                <div class="description markdown-body" style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:6;overflow:hidden;">
+                                    <%-markedes(item.content)%>
+                                </div>
+                                <div class="extra">
+                                    <div class="ui label">Vue.js</div>
+                                    <div class="ui label"><i class="globe icon"></i>Javascript</div>
+                                    <div class="ui label"><i class="git square icon"></i>Git</div>
+                                </div>
+                            </div>
+                        </div>
+                    <%})%>
+                    <div class="item">
+                        <div class="content">
+                            <a class="header">Vue.js（一）初步接触</a>
+                            <div class="meta">
+                                <span class="cinema">2016-08-20</span>
+                            </div>
+                            <div class="description">
+                                <p>
+                                    Vue.js 是用于构建交互式的 Web 界面的库。它提供了 MVVM 数据绑定和一个可组合的组件系统，
+                                    具有简单、灵活的 API。从技术上讲， Vue.js 集中在 MVVM 模式上的视图模型层，并通过双向数据绑定连接视图和模型。
+                                    实际的 DOM 操作和输出格式被抽象出来成指令和过滤器。相比其它的 MVVM 框架，Vue.js 更容易上手。
+                                </p>
+                            </div>
+                            <div class="extra">
+                                <div class="ui label">Vue.js</div>
+                                <div class="ui label"><i class="globe icon"></i>Javascript</div>
+                                <div class="ui label"><i class="jsfiddle icon"></i>Jsfiddle</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="image">
+                            <img src="/public/images/image.png">
+                        </div>
+                        <div class="content">
+                            <a class="header">Vue.js（一）初步接触</a>
+                            <div class="meta">
+                                <span class="cinema">2016-08-20</span>
+                            </div>
+                            <div class="description">
+                                <p>
+                                    Vue.js 是用于构建交互式的 Web 界面的库。它提供了 MVVM 数据绑定和一个可组合的组件系统，
+                                    具有简单、灵活的 API。从技术上讲， Vue.js 集中在 MVVM 模式上的视图模型层，并通过双向数据绑定连接视图和模型。
+                                    实际的 DOM 操作和输出格式被抽象出来成指令和过滤器。相比其它的 MVVM 框架，Vue.js 更容易上手。
+                                </p>
+                            </div>
+                            <div class="extra">
+                                <div class="ui label">Vue.js</div>
+                                <div class="ui label"><i class="globe icon"></i>Javascript</div>
+                                <div class="ui label"><i class="github icon"></i>Gitub</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <a class="header">Vue.js（一）初步接触</a>
+                            <div class="meta">
+                                <span class="cinema">2016-08-20</span>
+                            </div>
+                            <div class="description">
+                                <p>
+                                    Vue.js 是用于构建交互式的 Web 界面的库。它提供了 MVVM 数据绑定和一个可组合的组件系统，
+                                    具有简单、灵活的 API。从技术上讲， Vue.js 集中在 MVVM 模式上的视图模型层，并通过双向数据绑定连接视图和模型。
+                                    实际的 DOM 操作和输出格式被抽象出来成指令和过滤器。相比其它的 MVVM 框架，Vue.js 更容易上手。
+                                </p>
+                            </div>
+                            <div class="extra">
+                                <div class="ui label">Vue.js</div>
+                                <div class="ui label"><i class="globe icon"></i>Javascript</div>
+                                <div class="ui label"><i class="git square icon"></i>Git</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%- include('./main/right.html') %>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script src="/public/js/jquery.min.js"></script>
+<script src="/public/js/semantic.min.js"></script>
+<script src="/public/js/layer.js"></script>
+<script src="/public/js/prism.js"></script>
+<script>
+    $("#loginBtn").click(function(){
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            url:'/api/user/login',
+            data:{
+                username:$("#loginDiv").find('input[name="username"]').val(),
+                password:$("#loginDiv").find('input[name="password"]').val(),
+            },
+            success:function (ret) {
+                console.log(JSON.stringify(ret));
+                if(ret.data.userInfo){
+                    layer.msg('登录成功！');
+                    setTimeout(function(){
+                        window.location.reload();
+                    },300);
+                }else{
+                    layer.msg(ret.msg);
+                }
+            }
+        });
+    });
+    $("#regBtn").click(function(){
+        $.ajax({
+            type:'post',
+            url:'/api/user/register',
+            dataType:'json',
+            data:{
+                username:$("#registerDiv").find('input[name="username"]').val(),
+                password:$("#registerDiv").find('input[name="password"]').val(),
+                rePassWord:$("#registerDiv").find('input[name="repassword"]').val()
+            },
+            success:function(ret){
+                console.log(JSON.stringify(ret));
+                if(ret.data.userInfo) {
+                    layer.msg('注册成功，马上上去登录！');
+                    toLogin();
+                }
+            }
+        });
+    })
+    $(".item").click(function () {
+        var id = $(this).data("id");
+        if(!id){
+            return;
+        }
+        location.href = "/article_detail/"+id;
+    });
+    $("#new_article").click(function () {
+        location.href = "/new_article";
+    })
+    function toLogin(){
+        $("#registerDiv").hide();
+        $("#loginDiv").show();
+    }
+    function toRegister(){
+        $("#registerDiv").show();
+        $("#loginDiv").hide();
+    }
+    function loginOut(){
+        $.ajax({
+            type:'post',
+            url:'/api/user/loginout',
+            dataType:'json',
+            success:function(ret){
+                window.location="/";
+            }
+        });
+    }
+</script>
+</html>

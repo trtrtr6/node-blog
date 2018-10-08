@@ -1,0 +1,76 @@
+<div class="right-div">
+    <%if(userInfo._id){%>
+    <div class="user-info" id="user-info">
+        <div class="ui card">
+            <div class="content">
+                <img class="right floated mini ui image" src="/public/images/head.jpg">
+                <div class="header" id="username"><%=userInfo.username%></div>
+                <div class="meta">喜欢接触新鲜事物 </div>
+                <div class="description">爱交友、爱旅行、喜欢接触新鲜事物、迎接新的挑战，更爱游离于错综复杂的编码与逻辑中 </div>
+            </div>
+            <div class="ui bottom attached button" id="new_article">
+                <i class="write icon"></i>
+                发表文章
+            </div>
+        </div>
+    </div>
+    <%}else{%>
+    <div class="login" id="loginDiv">
+        <div class="ui card">
+            <form class="ui form">
+                <div class="field">
+                    <label>用户名</label>
+                    <div class="ui left icon input">
+                        <input type="text" name="username" placeholder="用户名">
+                        <i class="user icon"></i>
+                    </div>
+
+                </div>
+                <div class="field">
+                    <label>密码</label>
+                    <div class="ui left icon input">
+                        <input type="text" name="password" placeholder="密码">
+                        <i class="lock icon"></i>
+                    </div>
+                </div>
+                <div class="field form-button">
+                    <a href="javascript:void(0);" onclick="toRegister()">马上去注册</a>
+                    <div class="ui blue submit button" tabindex="0" id="loginBtn">登录</div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="register" id="registerDiv" style="display: none;">
+        <div class="ui card">
+            <form class="ui form">
+                <div class="field">
+                    <label>用户名</label>
+                    <div class="ui left icon input">
+                        <input type="text" name="username" placeholder="用户名">
+                        <i class="user icon"></i>
+                    </div>
+
+                </div>
+                <div class="field">
+                    <label>密码</label>
+                    <div class="ui left icon input">
+                        <input type="text" name="password" placeholder="密码">
+                        <i class="lock icon"></i>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>确认密码</label>
+                    <div class="ui left icon input">
+                        <input type="text" name="repassword" placeholder="确认密码">
+                        <i class="lock icon"></i>
+                    </div>
+                </div>
+                <div class="field form-button">
+                    <a href="javascript:void(0);" onclick="toLogin()">已有账户，马上登录！</a>
+                    <div class="ui blue submit button" tabindex="0" id="regBtn">注册</div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <%}%>
+</div>
