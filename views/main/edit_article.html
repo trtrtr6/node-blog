@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, minimum-scale=1, maximum-scale=1">
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="shortcut icon" href="/public/images/favicon.ico">
+    <link rel="stylesheet" href="/public/css/semantic.min.css">
+</head>
+<style>
+    .head-div{
+        padding:10px;
+    }
+    .main-div{
+        position: relative;
+    }
+    .main-div .main-info{
+        padding:10px;
+        display: -webkit-box;/*旧版本，ios6-，Safari 3.1-6*/
+        display: -moz-box;/*旧版本，Firefox 19-*/
+        display: -ms-flexbox;/*混合版本，IE10*/
+        display: -webkit-flex;/*新版本：Chrome*/
+        display: flex;/*新版本：Opera 12.1,Firefox 20+*/
+    }
+    .right-div{
+        width:260px;
+        padding:0px 0px 0px 20px;
+    }
+    .login,.register,.user-info{
+        margin-bottom: 10px;
+    }
+    .right-div .ui.form{
+        padding:10px;
+    }
+    .main-div .ui.card{
+        height:100%;
+        /*设置伸缩性*/
+        -webkit-box-flex: 1;
+        -moz-box-flex: 1;
+        -ms-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+    }
+    .form-button{
+        height:40px;
+        line-height: 40px;
+    }
+    .form-button a{
+        display: inline-block;
+        padding-left: 10px;
+        width:142px;
+    }
+    .user-info .ui.right.floated.image{
+        margin-bottom: 0.2em;
+        margin-left: 0em;
+        width:50px;
+    }
+    .ui.card.main-content{
+        padding:1em;
+    }
+    .ui.card.main-content .my-content{
+        width:100%;
+        box-shadow:0 0px 0px 0 #d4d4d5, 0 0 0 0px #d4d4d5;
+    }
+    .right.menu .loginOutBtn{
+        color:rgba(0,0,0,.6);
+    }
+    .ui.secondary.pointing.menu .right.menu .loginBtn{
+        color:rgba(0,0,0,.6);
+        display:none;
+    }
+    @media screen and (max-width:600px){
+        .right-div{
+            display:none;
+        }
+        .ui.secondary.pointing.menu a:nth-child(n+4){
+            display:none;
+        }
+        .ui.secondary.pointing.menu .right.menu .loginBtn{
+            display:block;
+        }
+    }
+</style>
+<body>
+<div class="ui container">
+    <%- include('header.html') %>
+    <div class="main-div">
+        <div class="main-info">
+            <div class="ui card">
+                <div class="eight wide column">
+                    <form class="ui form segment" method="post" action="/edit_article/<%=article._id%>" style="border:0px;">
+                        <div class="field required">
+                            <label>标题</label>
+                            <input type="text" name="title" value="<%=article.title%>">
+                        </div>
+                        <div class="field required">
+                            <label>内容</label>
+                            <textarea name="content" rows="15"><%=article.content%></textarea>
+                        </div>
+                        <input type="submit" class="ui positive button" value="保存">
+                    </form>
+                </div>
+            </div>
+            <%- include('right.html') %>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script src="/public/js/jquery.min.js"></script>
+<script src="/public/js/semantic.min.js"></script>
+<script src="/public/js/layer.js"></script>
+<script>
+    $("#loginBtn").click(function(){
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            url:'/api/user/login',
+            data:{
+                username:$("#loginDiv").find('input[name="username"]').val(),
+                password:$("#loginDiv").find('input[name="password"]').val(),
+            },
+            success:function (ret) {
+                console.log(JSON.stringify(ret));
+                if(ret.data.userInfo){
+                    layer.msg('登录成功！');
+                    setTimeout(function(){
+                        window.location.reload();
+                    },300);
+                }
+            }
+        });
+    });
+    $("#regBtn").click(function(){
+        $.ajax({
+            type:'post',
+            url:'/api/user/register',
+            dataType:'json',
+            data:{
+                username:$("#registerDiv").find('input[name="username"]').val(),
+                password:$("#registerDiv").find('input[name="password"]').val(),
+                rePassWord:$("#registerDiv").find('input[name="repassword"]').val()
+            },
+            success:function(ret){
+                console.log(JSON.stringify(ret));
+                if(ret.data.userInfo) {
+                    layer.msg('注册成功，马上上去登录！');
+                    toLogin();
+                }
+            }
+        });
+    })
+    function toLogin(){
+        $("#registerDiv").hide();
+        $("#loginDiv").show();
+    }
+    function toRegister(){
+        $("#registerDiv").show();
+        $("#loginDiv").hide();
+    }
+    function loginOut(){
+        $.ajax({
+            type:'post',
+            url:'/api/user/loginout',
+            dataType:'json',
+            success:function(ret){
+                window.location="/";
+            }
+        });
+    }
+</script>
+</html>

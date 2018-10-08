@@ -1,0 +1,28 @@
+.sidebar::-webkit-scrollbar {
+    display: none !important;
+}
+.title.item {
+    padding: .92857143em 1.14285714em !important;
+}
+.ui.left.sidebar,
+.ui.right.sidebar {
+    width: 190px;
+}
+
+.navslide {
+    margin-left: 190px;
+    -webkit-transition-duration: 0.1s;
+    transition-duration: 0.1s;
+}
+.mainWrap {
+    background: #f1f4f5;
+    min-height: 100%;
+    position: relative;
+}
+
+.logo {
+    height: 57px;
+    /*background-color: #fff!important;*/
+    -webkit-transition-duration: 0.1s;
+    transition-duration: 0.1s;
+}
