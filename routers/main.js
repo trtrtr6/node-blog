@@ -8,7 +8,7 @@ var Comment = require('../models/Comment');
 var Response = require('../models/Response');
 
 router.get('/',function(req,res,next){
-    Article.find().populate('_user','username _id').sort({_id: -1}).exec(function(err,article_list) {
+    Article.find({ del: {$ne: '0'}}).populate('_user','username _id').sort({_id: -1}).exec(function(err,article_list) {
         res.render('index',{
             userInfo:req.userInfo,
             article_list:article_list
@@ -146,5 +146,19 @@ router.post('/edit_article/:id',function(req,res,next){
         if(err) console.log(err);
         res.redirect('/article_detail/'+id);
     })
+})
+// DELETE /delete_article/:id 删除文章
+router.get('/delete_article/:id',function(req,res,next){
+    var id = req.params.id
+    var article = {
+        del:'0'
+    };
+    Article.findByIdAndUpdate({
+        _id:id
+    }, article).then(function(doc){
+        console.log(`删除${id}的文章成功`)
+        console.log(doc)
+        res.redirect('/');
+    });
 })
 module.exports = router;

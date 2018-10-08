@@ -3,21 +3,21 @@
  * Created by xyy on 2017/3/5.
  */
 
-var express = require('express');
-var ejs  = require('ejs');
+const express = require('express');
+const ejs  = require('ejs');
 //加载数据库模块
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 //用来处理post提交的数据
-var bodyParse = require('body-parser');
+const bodyParse = require('body-parser');
 //加载cookies模块
-var cookies = require('cookies');
+const cookies = require('cookies');
 //路由
-var routers = require('./routers');
+const routers = require('./routers');
 //全局变量以及方法
-var locals = require('./utils/locals');
+const locals = require('./utils/locals');
 //加载配置
-var config = require('config');
-var app = express();
+const config = require('config');
+const app = express();
 
 //加载全局变量以及方法
 locals(app);
@@ -62,6 +62,7 @@ mongoose.connect(mongodb_config,function(err){
         console.log('数据库连接失败');
     }else{
         console.log('数据库连接成功');
-        app.listen(process.env.PORT || 5000);
+        const port = process.env.PORT || 5000
+        app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
     }
 });

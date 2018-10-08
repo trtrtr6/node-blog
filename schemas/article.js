@@ -34,7 +34,11 @@ module.exports = new mongoose.Schema({
     _comments:[{
         type: Schema.Types.ObjectId,
         ref: 'Comment'
-    }]
+    }],
+    del: {
+        type: String,
+        default: '1'
+    }
 },{
     versionKey: false,
     timestamps: { createdAt: 'createTime', updatedAt: 'updateTime' }
