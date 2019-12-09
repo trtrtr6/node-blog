@@ -27,11 +27,6 @@ locals(app);
 app.use('/public', express.static(__dirname + '/public'));
 
 ///////// 自定义logger输出 /////////
-// 自定义token
-logger.token('from', function (req, res) {
-  return JSON.stringify(req.query) || '-';
-});
-
 logger.token('time', function (req, res) {
   return app.locals.dateFormat(new Date())
 });
@@ -41,7 +36,7 @@ logger.token('nextROw', function (req, res) {
 });
 
 // 自定义format，其中包含自定义的token
-logger.format('joke', '[joke] :time :remote-addr :remote-user :method :url :from :status :referrer :response-time ms :user-agent :nextROw');
+logger.format('joke', '[joke] :time :remote-addr :remote-user :method :url :status :referrer :response-time ms :user-agent :nextROw');
 
 app.use(logger('joke'));
 ///////// 自定义logger输出 /////////
