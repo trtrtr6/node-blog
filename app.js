@@ -11,6 +11,8 @@ const mongoose = require('mongoose');
 const bodyParse = require('body-parser');
 //加载cookies模块
 const cookies = require('cookies');
+//日志处理
+var logger = require('morgan');
 //路由
 const routers = require('./routers');
 //全局变量以及方法
@@ -23,6 +25,26 @@ const app = express();
 locals(app);
 
 app.use('/public', express.static(__dirname + '/public'));
+
+///////// 自定义logger输出 /////////
+// 自定义token
+logger.token('from', function (req, res) {
+  return JSON.stringify(req.query) || '-';
+});
+
+logger.token('time', function (req, res) {
+  return app.locals.dateFormat(new Date())
+});
+
+logger.token('nextROw', function (req, res) {
+  return "\r\n";
+});
+
+// 自定义format，其中包含自定义的token
+logger.format('joke', '[joke] :time :remote-addr :remote-user :method :url :from :status :referrer :response-time ms :user-agent :nextROw');
+
+app.use(logger('joke'));
+///////// 自定义logger输出 /////////
 
 app.engine('html', ejs.renderFile);
 app.set('views', './views');
