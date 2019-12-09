@@ -12,7 +12,9 @@ const bodyParse = require('body-parser');
 //加载cookies模块
 const cookies = require('cookies');
 //日志处理
-var logger = require('morgan');
+const logger = require('morgan');
+//gzip
+const compression = require('compression')
 //路由
 const routers = require('./routers');
 //全局变量以及方法
@@ -20,6 +22,8 @@ const locals = require('./utils/locals');
 //加载配置
 const config = require('config');
 const app = express();
+
+app.use(compression());
 
 //加载全局变量以及方法
 locals(app);
