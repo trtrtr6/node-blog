@@ -11,11 +11,7 @@ const auth = require('../middlewares/auth')
 var responseData;
 
 router.use(function (req, res, next) {
-  responseData = {
-    code: constants.RES_INFO.code,
-    msg: constants.RES_INFO.msg,
-    data: {}
-  };
+  responseData = Object.assign({}, constants.RES_INFO.success, { data: {} })
   next()
 })
 
