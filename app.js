@@ -52,6 +52,9 @@ app.set('view engine', 'html');
 app.set('view cache', false);
 
 //bodyParse设置
+//解析 application/json
+app.use(bodyParse.json());
+//解析 application/x-www-form-urlencoded
 app.use(bodyParse.urlencoded({ extended: true }));
 
 //cookies设置

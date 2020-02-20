@@ -5,6 +5,7 @@
 module.exports = function (app) {
   app.use('/admin', require('./admin'));
   app.use('/api', require('./api'));
+  app.use('/mock', require('./mock'));
   app.use('/mock-api', require('./mockApi'));
   app.use('/', require('./main'));
 
