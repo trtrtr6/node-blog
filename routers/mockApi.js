@@ -4,6 +4,7 @@ const Mock = require('../models/Mock')
 const constants = require('../utils/constants')
 const Mockjs = require('mockjs')
 
+// 不用我们自己遍历处理。mock支持整个对象的mock
 const MockData = (obj) => {
   if (typeof obj === 'object') {
     Object.keys(obj).forEach((key) => {
@@ -52,7 +53,7 @@ router.use('/', async (req, res, next) => {
     type: { $regex: method, $options: '$i' } // 忽略大小写
   })
   if (doc && doc.reg) {
-    responseData.data = MockData(doc.reg)
+    responseData.data = Mockjs.mock(doc.reg)
   }
   res.json(responseData)
 })
