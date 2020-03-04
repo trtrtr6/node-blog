@@ -41,25 +41,8 @@ router.post('/add', async (req, res) => {
   responseData.data = doc
   res.json(responseData);
 })
-//查看mock接口详情
-router.get('/info/:id', async (req, res) => {
-  const id = req.params.id
-  const doc = await Mock.findOne({
-    _id: id
-  })
-  responseData.data = doc
-  res.json(responseData);
-})
-//查看mock接口列表
-router.get('/list', async (req, res) => {
-  let list = await Mock.find().sort({ updateTime: -1 })
-  responseData.data = {
-    list
-  }
-  res.json(responseData);
-})
 
-//查看mock接口详情
+//删除mock接口
 router.get('/del/:id', async (req, res) => {
   const id = req.params.id
   await Mock.deleteOne({
@@ -68,7 +51,7 @@ router.get('/del/:id', async (req, res) => {
   res.json(responseData);
 })
 
-//查看mock接口详情
+//更新mock接口
 router.post('/update/:id', async (req, res) => {
   const body = req.body
   const id = req.params.id
@@ -89,5 +72,37 @@ router.post('/update/:id', async (req, res) => {
   }, mock)
   res.json(responseData);
 })
+
+//查看mock接口详情
+router.get('/info/:id', async (req, res) => {
+  const id = req.params.id
+  const doc = await Mock.findOne({
+    _id: id
+  })
+  responseData.data = doc
+  res.json(responseData);
+})
+
+//查看mock接口列表
+router.get('/list', async (req, res) => {
+  const query = req.query
+  try {
+    const option = Object.keys(query).reduce((result, item) => {
+      if (query[item]) {
+        result[item] = query[item]
+      }
+      return result
+    }, {})
+    let list = await Mock.find(option).sort({ updateTime: -1 })
+    responseData.data = {
+      list
+    }
+    res.json(responseData);
+  } catch (error) {
+    responseData.data = error
+    res.json(responseData);
+  }
+})
+
 
 module.exports = router;
