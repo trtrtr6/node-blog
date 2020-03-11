@@ -22,9 +22,6 @@ router.get('/user', function (req, res) {
 router.post('/user/login', function (req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  console.log('body', req.body);
-  console.log('username', username);
-  console.log('password', password);
   User.findOne({
     username: username,
     password: password
@@ -44,7 +41,7 @@ router.post('/user/login', function (req, res) {
       res.json(responseData);
       return;
     }
-    responseData.code = '1'
+    responseData.code = constants.RES_INFO.error.code
     responseData.msg = '登录失败！';
     res.json(responseData);
   });
@@ -57,7 +54,7 @@ router.post('/user/register', function (req, res) {
   }).then(function (userInfo) {
     console.log(userInfo);
     if (userInfo) {
-      responseData.code = 1;
+      responseData.code = constants.RES_INFO.error.code
       responseData.msg = '用户已存在！';
       res.json(responseData);
       return;
@@ -128,10 +125,11 @@ router.get('/detail/:id', auth.checkLogin, async (req, res) => {
       }
     }]
   })
-  res.json({
+  responseData.data = {
     userInfo: req.userInfo,
     article: article
-  })
+  }
+  res.json(responseData);
 })
 
 module.exports = router;
