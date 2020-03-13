@@ -7,6 +7,7 @@ var User = require('../models/User');
 var Article = require('../models/Article');
 const constants = require('../utils/constants')
 const auth = require('../middlewares/auth')
+const pagination = require('../utils/pagination')
 
 var responseData;
 
@@ -48,7 +49,6 @@ router.post('/user/login', function (req, res) {
 })
 
 router.post('/user/register', function (req, res) {
-
   User.findOne({
     username: req.body.username
   }).then(function (userInfo) {
@@ -75,7 +75,7 @@ router.post('/user/register', function (req, res) {
     responseData.data.userInfo = {
       _id: newUserInfo._id,
       username: newUserInfo.username
-    };;
+    };
     res.json(responseData);
   });
 
@@ -90,7 +90,10 @@ router.post('/user/loginout', function (req, res) {
  * 获取文章列表
  */
 router.get('/list', async (req, res) => {
-  let article_list = await Article.find({ del: { $ne: '0' } }, { del: 0, _comments: 0 }).populate('_user', 'username _id').sort({ _id: -1 })
+  const page = parseInt(req.query.page)
+  const size = parseInt(req.query.size)
+  const count = await Article.count({ del: { $ne: '0' } })
+  const article_list = await Article.find({ del: { $ne: '0' } }, { del: 0, _comments: 0 }).populate('_user', 'username _id').sort({ _id: -1 }).skip(size * (page - 1)).limit(size)
   const list = article_list.map((item, index) => {
     const des = req.app.locals.markedes(item.content)
     item = item.toObject() // 将文档对象转成object对象
@@ -100,7 +103,8 @@ router.get('/list', async (req, res) => {
   })
   responseData.data = {
     userInfo: req.userInfo,
-    article_list: list
+    article_list: list,
+    pagination: pagination.getPageInfo(count, page, size)
   }
   res.json(responseData);
 })

@@ -5,6 +5,7 @@ var express = require('express');
 var router = express.Router();
 var Mock = require('../models/Mock');
 const constants = require('../utils/constants')
+const pagination = require('../utils/pagination')
 
 var responseData;
 
@@ -86,16 +87,20 @@ router.get('/info/:id', async (req, res) => {
 //查看mock接口列表
 router.get('/list', async (req, res) => {
   const query = req.query
+  const page = pagination.getPage(query.page)
+  const size = pagination.getSize(query.size)
   try {
     const option = Object.keys(query).reduce((result, item) => {
-      if (query[item]) {
+      if (query[item] && item !== 'page' && item !== 'size') {
         result[item] = query[item]
       }
       return result
     }, {})
-    let list = await Mock.find(option).sort({ updateTime: -1 })
+    const count = await Mock.count(option)
+    let list = await Mock.find(option).sort({ updateTime: -1 }).skip(size * (page - 1)).limit(size)
     responseData.data = {
-      list
+      list,
+      pagination: pagination.getPageInfo(count, page, size)
     }
     res.json(responseData);
   } catch (error) {
