@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Mock = require('../models/Mock')
+const mockModel = require('../models/Mock')
 const constants = require('../utils/constants')
 const Mockjs = require('mockjs')
 
@@ -48,7 +48,7 @@ router.use('/', async (req, res, next) => {
   console.log(req.path)
   const method = req.method
   const path = req.path
-  const doc = await Mock.findOne({
+  const doc = await mockModel.findOne({
     path,
     type: { $regex: method, $options: '$i' } // 忽略大小写
   })

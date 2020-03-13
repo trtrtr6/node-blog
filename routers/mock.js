@@ -3,7 +3,7 @@
  */
 var express = require('express');
 var router = express.Router();
-var Mock = require('../models/Mock');
+const mockModel = require('../models/Mock')
 const constants = require('../utils/constants')
 const pagination = require('../utils/pagination')
 
@@ -23,22 +23,13 @@ router.post('/add', async (req, res) => {
     res.json(responseData);
     return
   }
-  const count = await Mock.count({
-    path,
-    type
-  })
+  const count = await mockModel.count({ path, type })
   if (count && count > 0) {
     responseData.data = '已存在对应的接口，添加失败'
     res.json(responseData);
     return
   }
-  const mock = new Mock({
-    name,
-    path,
-    type,
-    reg
-  })
-  const doc = await mock.save()
+  const doc = await mockModel.save({ name, path, type, reg })
   responseData.data = doc
   res.json(responseData);
 })
@@ -46,9 +37,7 @@ router.post('/add', async (req, res) => {
 //删除mock接口
 router.get('/del/:id', async (req, res) => {
   const id = req.params.id
-  await Mock.deleteOne({
-    _id: id
-  })
+  await mockModel.delById(id)
   res.json(responseData);
 })
 
@@ -62,24 +51,14 @@ router.post('/update/:id', async (req, res) => {
     res.json(responseData);
     return
   }
-  const mock = {
-    name,
-    path,
-    type,
-    reg
-  };
-  await Mock.findByIdAndUpdate({
-    _id: id
-  }, mock)
+  await mockModel.updateById(id, { name, path, type, reg })
   res.json(responseData);
 })
 
 //查看mock接口详情
 router.get('/info/:id', async (req, res) => {
   const id = req.params.id
-  const doc = await Mock.findOne({
-    _id: id
-  })
+  const doc = await mockModel.findById(id)
   responseData.data = doc
   res.json(responseData);
 })
@@ -96,8 +75,8 @@ router.get('/list', async (req, res) => {
       }
       return result
     }, {})
-    const count = await Mock.count(option)
-    let list = await Mock.find(option).sort({ updateTime: -1 }).skip(size * (page - 1)).limit(size)
+    const count = await mockModel.count(option)
+    const list = await mockModel.find(option, page, size)
     responseData.data = {
       list,
       pagination: pagination.getPageInfo(count, page, size)
