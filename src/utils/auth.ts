@@ -2,13 +2,7 @@
  * Created by xyy on 2017/3/19.
  */
 import jwt from 'jsonwebtoken'
-// import jwtConfig from '../../config/jwtConfig'
-
-const jwtConfig = {
-  secret: 'admin',
-  expiresInMinutes: 1440
-}
-
+import jwtConfig from '../../config/jwtConfig'
 export default {
   createToken: user => {
     var token = jwt.sign(user, jwtConfig.secret, {
