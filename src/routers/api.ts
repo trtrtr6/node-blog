@@ -94,8 +94,8 @@ router.post('/user/loginout', (req: Request, res: Response) => {
  * 获取文章列表
  */
 router.get('/list', async (req: Request, res: Response) => {
-  const page = parseInt(req.query.page)
-  const size = parseInt(req.query.size)
+  const page = pagination.getPage(req.query.page)
+  const size = pagination.getSize(req.query.size)
   const count = await Article.count({ del: { $ne: '0' } })
   const article_list = await Article.find({ del: { $ne: '0' } }, page, size)
 

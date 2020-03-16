@@ -83,12 +83,18 @@ routers(app)
 
 // mongoose.Promise = global.Promise
 const mongodb_config: string = config.get('dbConfig.mongodb')
-mongoose.connect(mongodb_config, function(err) {
-  if (err) {
-    console.log('数据库连接失败')
-  } else {
-    console.log('数据库连接成功')
-    const port = process.env.PORT || 5000
-    app.listen(port, () => console.log(`Listening at http://localhost:${port}`))
+mongoose.connect(
+  mongodb_config,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  function(err) {
+    if (err) {
+      console.log('数据库连接失败')
+    } else {
+      console.log('数据库连接成功')
+      const port = process.env.PORT || 5000
+      app.listen(port, () =>
+        console.log(`Listening at http://localhost:${port}`)
+      )
+    }
   }
-})
+)
