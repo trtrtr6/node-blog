@@ -8,9 +8,9 @@ export default {
     }
   },
   getPage: (page: number) => {
-    return page || 1
+    return page && Number(page) || 1
   },
   getSize: (size: number) => {
-    return size || 10
+    return size && Number(size) || 10
   }
 }

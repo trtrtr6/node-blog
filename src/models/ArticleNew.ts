@@ -7,18 +7,18 @@ const Article: Model<IArticle & Document> = model<IArticle & Document>(
   articleSchema
 )
 
-class articleModel {
-  public static count(option: any) {
+export default class articleModel {
+  public static count (option: any) {
     return Article.count(option)
   }
-  public static save(option: IArticle) {
+  public static save (option: IArticle) {
     const a = new Article(option)
     return a.save()
   }
-  public static delById(id: string) {
+  public static delById (id: string) {
     return Article.deleteOne({ _id: id })
   }
-  public static updateById(id: string, option: IArticle) {
+  public static updateById (id: string, option: IArticle) {
     return Article.findByIdAndUpdate(
       {
         _id: id
@@ -26,7 +26,7 @@ class articleModel {
       option
     )
   }
-  public static findById(id: string) {
+  public static findById (id: string) {
     return Article.findOne({ _id: id }, { del: 0 })
       .populate('_user', 'username _id')
       .populate({
@@ -47,7 +47,7 @@ class articleModel {
         ]
       })
   }
-  public static findOne(option: IArticle) {
+  public static findOne (option: IArticle) {
     return Article.findOne(option, { del: 0 })
       .populate('_user', 'username _id')
       .populate({
@@ -68,7 +68,7 @@ class articleModel {
         ]
       })
   }
-  public static find(option: any, page: number, size: number) {
+  public static find (option: any, page: number, size: number) {
     return Article.find(option, { del: 0, _comments: 0 })
       .populate('_user', 'username _id')
       .sort({ _id: -1 })
@@ -76,4 +76,3 @@ class articleModel {
       .limit(size)
   }
 }
-export default articleModel

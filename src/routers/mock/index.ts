@@ -2,9 +2,9 @@
  * Created by xyy on 2017/3/5.
  */
 import { Router, Request, Response } from 'express'
-import mockModel from '../models/Mock'
-import { RES_INFO } from '../utils/constants'
-import pagination from '../utils/pagination'
+import mockModel from '../../models/Mock'
+import { RES_INFO } from '../../utils/constants'
+import pagination from '../../utils/pagination'
 
 const router: Router = Router()
 

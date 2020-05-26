@@ -3,8 +3,7 @@
  */
 
 import express from 'express'
-
-const ejs = require('ejs')
+import ejs from 'ejs'
 //加载数据库模块
 import mongoose from 'mongoose'
 //用来处理post提交的数据
@@ -16,7 +15,7 @@ const logger = require('morgan')
 //gzip
 import compression from 'compression'
 //路由
-const routers = require('./routers')
+import routers from './routers'
 //全局变量以及方法
 const locals = require('./utils/locals')
 //加载配置
@@ -31,11 +30,11 @@ locals(app)
 app.use('/public', express.static(__dirname + '/public'))
 
 ///////// 自定义logger输出 /////////
-logger.token('time', function(req, res) {
+logger.token('time', function (req, res) {
   return app.locals.dateFormat(new Date())
 })
 
-logger.token('nextROw', function(req, res) {
+logger.token('nextROw', function (req, res) {
   return '\r\n'
 })
 
@@ -56,9 +55,9 @@ app.set('view cache', false)
 
 //bodyParse设置
 //解析 application/json
-app.use(bodyParse.json())
+app.use(bodyParse.json({ limit: '50mb' }))
 //解析 application/x-www-form-urlencoded
-app.use(bodyParse.urlencoded({ extended: true }))
+app.use(bodyParse.urlencoded({ limit: '50mb', extended: true }))
 
 // //cookies设置
 // app.use(function(req, res, next) {
@@ -86,7 +85,7 @@ const mongodb_config: string = config.get('dbConfig.mongodb')
 mongoose.connect(
   mongodb_config,
   { useNewUrlParser: true, useUnifiedTopology: true },
-  function(err) {
+  function (err) {
     if (err) {
       console.log('数据库连接失败')
     } else {

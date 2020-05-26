@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router()
-const mockModel = require('../models/Mock')
-const constants = require('../utils/constants')
+import mockModel from '../../models/Mock'
+import { RES_INFO } from '../../utils/constants'
 const Mockjs = require('mockjs')
 
 // 不用我们自己遍历处理。mock支持整个对象的mock
@@ -38,8 +38,8 @@ const MockData = obj => {
 
 let responseData
 
-router.use(function(req, res, next) {
-  responseData = Object.assign({}, constants.RES_INFO.success, { data: {} })
+router.use(function (req, res, next) {
+  responseData = Object.assign({}, RES_INFO.SUCCESS, { data: {} })
   next()
 })
 
@@ -48,6 +48,7 @@ router.use('/', async (req, res, next) => {
   console.log(req.path)
   const method = req.method
   const path = req.path
+  console.log('====', mockModel.findOne)
   const doc = await mockModel.findOne({
     path,
     type: { $regex: method, $options: '$i' } // 忽略大小写

@@ -2,11 +2,11 @@
  * Created by xyy on 2017/3/5.
  */
 import { Router, Request, Response } from 'express'
-import User from '../models/User'
-import Article from '../models/ArticleNew'
-import { RES_INFO } from '../utils/constants'
-import auth from '../middlewares/auth'
-import pagination from '../utils/pagination'
+import User from '../../models/User'
+import Article from '../../models/ArticleNew'
+import { RES_INFO } from '../../utils/constants'
+import auth from '../../middlewares/auth'
+import pagination from '../../utils/pagination'
 
 const router: Router = Router()
 
@@ -17,10 +17,16 @@ router.use((req: Request, res: Response, next) => {
   next()
 })
 
+/**
+ * 请求健康监测
+ */
 router.get('/user', (req: Request, res: Response) => {
   res.send('api-User.js')
 })
 
+/**
+ * 用户登录
+ */
 router.post('/user/login', async (req: Request, res: Response) => {
   const username = req.body.username
   const password = req.body.password
@@ -36,7 +42,7 @@ router.post('/user/login', async (req: Request, res: Response) => {
       username: userInfo.username
     }
     // 老逻辑
-    req.cookies.set('userInfo', JSON.stringify(responseData.data.userInfo))
+    // req.cookies.set('userInfo', JSON.stringify(responseData.data.userInfo))
     // 新逻辑
     const token = auth.createToken({
       id: userInfo._id,
@@ -51,11 +57,14 @@ router.post('/user/login', async (req: Request, res: Response) => {
   res.json(responseData)
 })
 
+/**
+ * 用户注册
+ */
 router.post('/user/register', (req: Request, res: Response) => {
   User.findOne({
     username: req.body.username
   })
-    .then(function(userInfo) {
+    .then(function (userInfo) {
       console.log(userInfo)
       if (userInfo) {
         responseData.code = RES_INFO.ERROR.code
@@ -74,7 +83,7 @@ router.post('/user/register', (req: Request, res: Response) => {
         return user.save()
       }
     })
-    .then(function(newUserInfo) {
+    .then(function (newUserInfo) {
       console.log(newUserInfo)
       responseData.msg = '注册成功！'
       responseData.data.userInfo = {
@@ -84,7 +93,9 @@ router.post('/user/register', (req: Request, res: Response) => {
       res.json(responseData)
     })
 })
-
+/**
+ * 登出
+ */
 router.post('/user/loginout', (req: Request, res: Response) => {
   req.cookies.set('userInfo', null)
   res.json(responseData)
@@ -116,18 +127,15 @@ router.get('/list', async (req: Request, res: Response) => {
 /**
  * 根据id获取文章详情
  */
-router.get(
-  '/detail/:id',
-  auth.checkLogin,
-  async (req: Request, res: Response) => {
-    const id = req.params.id
-    const article = await Article.findById(id)
-    responseData.data = {
-      // userInfo: req.userInfo,
-      article: article
-    }
-    res.json(responseData)
+router.get('/detail/:id', auth.checkLogin, async (req: Request, res: Response) => {
+  const id = req.params.id
+  const article = await Article.findById(id)
+  responseData.data = {
+    // userInfo: req.userInfo,
+    article: article
   }
+  res.json(responseData)
+}
 )
 
 module.exports = router
