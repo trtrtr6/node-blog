@@ -17,9 +17,10 @@ router.use((req: Request, res: Response, next) => {
 router.post('/add', async (req: Request, res: Response) => {
   const body = req.body
   let { system, username, events } = body
-  events = JSON.parse(LZString.decompress(events))
-
-  const doc = await eventsModel.save({ system, username, events })
+  events = LZString.decompress(events)
+  events = LZString.compressToBase64(events)
+  const obj = { system, username, events }
+  const doc = await eventsModel.save(obj)
   responseData.data = doc
   res.json(responseData)
 })
@@ -28,6 +29,7 @@ router.post('/add', async (req: Request, res: Response) => {
 router.get('/info/:id', async (req: Request, res: Response) => {
   const id = req.params.id
   const doc = await eventsModel.findById(id)
+  // doc.events = LZString.decompressFromBase64(doc.events)
   responseData.data = doc
   res.json(responseData)
 })
@@ -50,11 +52,10 @@ router.get('/list', async (req: Request, res: Response) => {
       list,
       pagination: pagination.getPageInfo(count, page, size)
     }
-    res.json(responseData)
   } catch (error) {
     responseData.data = error
-    res.json(responseData)
   }
+  res.json(responseData)
 })
 
 module.exports = router

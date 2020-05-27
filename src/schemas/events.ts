@@ -12,7 +12,7 @@ export default new Schema(
       required: true
     },
     events: {
-      type: Array,
+      type: String,
       required: true
     },
     //创建时间
