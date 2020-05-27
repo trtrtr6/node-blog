@@ -8,10 +8,11 @@ export default {
   checkLogin: (req, res, next) => {
     //检查post的信息或者url查询参数或者头信息
     var token =
-      req.body.token || req.query.token || req.headers['x-access-token']
+      req.body.token || req.query.token || req.headers['x-token']
     const user = jwtUtil.checkToken(token)
     if (user) {
       console.log('-----user:', user)
+      res.locals.admin = user
       next()
     } else {
       res.json({
