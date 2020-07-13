@@ -22,6 +22,39 @@ const locals = require('./utils/locals')
 import config from 'config'
 const app = express()
 
+// swagger 文档
+const expressSwagger = require('express-swagger-generator')(app)
+
+let options = {
+  swaggerDefinition: {
+    info: {
+      description: '简单的api接口文档',
+      title: 'Swagger',
+      version: '1.0.0'
+    },
+    host: 'localhost:5000',
+    basePath: '/',
+    produces: ['application/json', 'x-www-form-urlencoded'],
+    schemes: ['http', 'https'],
+    securityDefinitions: {
+      JWT: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization',
+        description: ''
+      }
+    }
+  },
+  route: {
+    url: '/swagger',
+    docs: '/swagger.json' //swagger文件 api
+  },
+  basedir: __dirname, //app absolute path
+  files: ['./routers/**/*.ts'] //Path to the API handle folder
+}
+
+expressSwagger(options)
+
 app.use(compression())
 
 //加载全局变量以及方法

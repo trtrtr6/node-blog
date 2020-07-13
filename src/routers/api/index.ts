@@ -7,6 +7,7 @@ import Article from '../../models/ArticleNew'
 import { RES_INFO } from '../../utils/constants'
 import auth from '../../middlewares/auth'
 import pagination from '../../utils/pagination'
+import '../commonNote'
 
 const router: Router = Router()
 
@@ -24,8 +25,15 @@ router.get('/user', (req: Request, res: Response) => {
   res.send('api-User.js')
 })
 
+// 参考 https://github.com/pgroot/express-swagger-generator
+
 /**
- * 用户登录
+ *  用户登录
+ * @route POST /api/user/login
+ * @group 登录 - 用户登录、登出、注册
+ * @param {loginUser.model} body.body.required - 请输入用户名&密码
+ * @returns {object} 200 - An array of user info
+ * @returns {Error}  default - Unexpected error
  */
 router.post('/user/login', async (req: Request, res: Response) => {
   const username = req.body.username
@@ -58,7 +66,12 @@ router.post('/user/login', async (req: Request, res: Response) => {
 })
 
 /**
- * 用户注册
+ *  用户注册
+ * @route POST /api/user/register
+ * @group 登录 - 用户登录、登出、注册
+ * @param {loginUser.model} body.body.required - 请输入用户名&密码
+ * @returns {object} 200 - An array of user info
+ * @returns {Error}  default - Unexpected error
  */
 router.post('/user/register', (req: Request, res: Response) => {
   User.findOne({
