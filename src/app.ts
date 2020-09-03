@@ -89,6 +89,8 @@ app.set('view cache', false)
 //bodyParse设置
 //解析 application/json
 app.use(bodyParse.json({ limit: '50mb' }))
+//解析 text/plain
+app.use(bodyParse.json({ type: 'text/plain' }))
 //解析 application/x-www-form-urlencoded
 app.use(bodyParse.urlencoded({ limit: '50mb', extended: true }))
 

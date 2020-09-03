@@ -16,12 +16,24 @@ router.use((req: Request, res: Response, next) => {
 //新增一个events数据
 router.post('/add', async (req: Request, res: Response) => {
   const body = req.body
-  let { system, username, events } = body
+  let { system, username, events, sign } = body
+  console.log('body=====', req.body)
   events = LZString.decompress(events)
   events = LZString.compressToBase64(events)
-  const obj = { system, username, events }
-  const doc = await eventsModel.save(obj)
-  responseData.data = doc
+  if (sign) {
+    const doc = await eventsModel.findOne({ sign })
+    if (!doc) {
+      const obj = { system, username, events: [events], sign }
+      await eventsModel.save(obj)
+    } else {
+      const tempEvents = <string[]>doc.events
+      tempEvents.push(events)
+      await eventsModel.updateById(doc._id, { events: tempEvents })
+    }
+  } else {
+    const obj = { system, username, events }
+    await eventsModel.save(obj)
+  }
   res.json(responseData)
 })
 

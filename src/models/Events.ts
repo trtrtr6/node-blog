@@ -21,7 +21,7 @@ class eventsModel {
     })
   }
   public static updateById (id: string, option: IEvents) {
-    return Events.findByIdAndUpdate(
+    return Events.updateOne(
       {
         _id: id
       },
@@ -36,7 +36,7 @@ class eventsModel {
   public static findOne (option: IEvents) {
     return Events.findOne(option)
   }
-  public static find (option: IEvents, page: number, size: number, projection: string, ) {
+  public static find (option: IEvents, page: number, size: number, projection: string,) {
     return Events.find(option, projection)
       .sort({ updateTime: -1 })
       .skip(size * (page - 1))

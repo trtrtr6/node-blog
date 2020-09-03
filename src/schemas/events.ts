@@ -3,6 +3,9 @@ import { Schema } from 'mongoose'
 //用户结构表
 export default new Schema(
   {
+    sign: { // 标识event是同一个录制
+      type: String
+    },
     system: {
       type: String,
       required: true
@@ -12,7 +15,7 @@ export default new Schema(
       required: true
     },
     events: {
-      type: String,
+      type: Schema.Types.Mixed,
       required: true
     },
     //创建时间
