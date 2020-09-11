@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development && nodemon --config nodemon.json src/app.ts",
     "build": "tsc",
-    "start": "NODE_ENV=production pm2 start app.js --node-args='--harmony' --name 'blog'",
+    "start": "NODE_ENV=production pm2 start build/app.js --node-args='--harmony' --name 'node-blog'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

@@ -18,8 +18,8 @@ router.post('/add', async (req: Request, res: Response) => {
   const body = req.body
   let { system, username, events, sign } = body
   console.log('body=====', req.body)
-  events = LZString.decompress(events)
-  events = LZString.compressToBase64(events)
+  // events = LZString.decompressFromBase64(events)
+  // events = LZString.compressToBase64(events)
   if (sign) {
     const doc = await eventsModel.findOne({ sign })
     if (!doc) {
