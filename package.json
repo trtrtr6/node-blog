@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "set NODE_ENV=development && nodemon --config nodemon.json app.js",
-    "start": "NODE_ENV=production PORT=8080 pm2 start app.js --node-args='--harmony' --name 'blog'",
+    "start": "NODE_ENV=production pm2 start app.js --node-args='--harmony' --name 'blog'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

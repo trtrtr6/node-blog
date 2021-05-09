@@ -86,7 +86,7 @@ mongoose.connect(mongodb_config, function (err) {
     console.log('数据库连接失败');
   } else {
     console.log('数据库连接成功');
-    const port = process.env.PORT || 5000
+    const port = process.env.PORT || 8080
     app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
   }
 });
