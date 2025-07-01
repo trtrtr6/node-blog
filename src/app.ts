@@ -50,7 +50,7 @@ let options = {
     docs: "/swagger.json", //swagger文件 api
   },
   basedir: __dirname, //app absolute path
-  files: ["./routers/**/*.ts"], //Path to the API handle folder
+  files: ["./routers/**/*.ts", "./swagger/**/*.ts"], //Path to the API handle folder
 };
 
 expressSwagger(options);

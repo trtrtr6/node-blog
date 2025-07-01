@@ -7,7 +7,6 @@ import Article from "../../models/ArticleNew";
 import { RES_INFO } from "../../utils/constants";
 import auth from "../../middlewares/auth";
 import pagination from "../../utils/pagination";
-import "../commonNote";
 
 const router = express.Router();
 
