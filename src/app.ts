@@ -2,97 +2,97 @@
  * Created by xyy on 2017/3/5.
  */
 
-import express from 'express'
-import ejs from 'ejs'
+import express from "express";
+import ejs from "ejs";
 //加载数据库模块
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 //用来处理post提交的数据
-import bodyParse from 'body-parser'
+import bodyParse from "body-parser";
 //加载cookies模块
-const cookies = require('cookies')
+const cookies = require("cookies");
 //日志处理
-const logger = require('morgan')
+const logger = require("morgan");
 //gzip
-import compression from 'compression'
+import compression from "compression";
 //路由
-import routers from './routers'
+import routers from "./routers";
 //全局变量以及方法
-const locals = require('./utils/locals')
+const locals = require("./utils/locals");
 //加载配置
-import config from 'config'
-const app = express()
+import config from "config";
+const app = express();
 
 // swagger 文档
-const expressSwagger = require('express-swagger-generator')(app)
+const expressSwagger = require("express-swagger-generator")(app);
 
 let options = {
   swaggerDefinition: {
     info: {
-      description: '简单的api接口文档',
-      title: 'Swagger',
-      version: '1.0.0'
+      description: "简单的api接口文档",
+      title: "Swagger",
+      version: "1.0.0",
     },
-    host: 'localhost:5000',
-    basePath: '/',
-    produces: ['application/json', 'x-www-form-urlencoded'],
-    schemes: ['http', 'https'],
+    host: "localhost:5000",
+    basePath: "/",
+    produces: ["application/json", "x-www-form-urlencoded"],
+    schemes: ["http", "https"],
     securityDefinitions: {
       JWT: {
-        type: 'apiKey',
-        in: 'header',
-        name: 'Authorization',
-        description: ''
-      }
-    }
+        type: "apiKey",
+        in: "header",
+        name: "Authorization",
+        description: "",
+      },
+    },
   },
   route: {
-    url: '/swagger',
-    docs: '/swagger.json' //swagger文件 api
+    url: "/swagger",
+    docs: "/swagger.json", //swagger文件 api
   },
   basedir: __dirname, //app absolute path
-  files: ['./routers/**/*.ts'] //Path to the API handle folder
-}
+  files: ["./routers/**/*.ts"], //Path to the API handle folder
+};
 
-expressSwagger(options)
+expressSwagger(options);
 
-app.use(compression())
+app.use(compression());
 
 //加载全局变量以及方法
-locals(app)
+locals(app);
 
-app.use('/public', express.static(__dirname + '/public'))
+app.use("/public", express.static(__dirname + "/public"));
 
 ///////// 自定义logger输出 /////////
-logger.token('time', function (req, res) {
-  return app.locals.dateFormat(new Date())
-})
+logger.token("time", function (_req, _res) {
+  return app.locals.dateFormat(new Date());
+});
 
-logger.token('nextROw', function (req, res) {
-  return '\r\n'
-})
+logger.token("nextROw", function (_req, _res) {
+  return "\r\n";
+});
 
 // 自定义format，其中包含自定义的token
 logger.format(
-  'joke',
-  '[joke] :time :remote-addr :remote-user :method :url :status :referrer :response-time ms :user-agent :nextROw'
-)
+  "joke",
+  "[joke] :time :remote-addr :remote-user :method :url :status :referrer :response-time ms :user-agent :nextROw"
+);
 
-app.use(logger('joke'))
+app.use(logger("joke"));
 ///////// 自定义logger输出 /////////
 
-app.engine('html', ejs.renderFile)
-app.set('views', './views')
-app.set('view engine', 'html')
+app.engine("html", ejs.renderFile);
+app.set("views", "./src/views");
+app.set("view engine", "html");
 //在开发过程中，需要取消模板缓存
-app.set('view cache', false)
+app.set("view cache", false);
 
 //bodyParse设置
 //解析 application/json
-app.use(bodyParse.json({ limit: '50mb' }))
+app.use(bodyParse.json({ limit: "50mb" }));
 //解析 text/plain
-app.use(bodyParse.json({ type: 'text/plain' }))
+app.use(bodyParse.json({ type: "text/plain" }));
 //解析 application/x-www-form-urlencoded
-app.use(bodyParse.urlencoded({ limit: '50mb', extended: true }))
+app.use(bodyParse.urlencoded({ limit: "50mb", extended: true }));
 
 // //cookies设置
 // app.use(function(req, res, next) {
@@ -113,22 +113,22 @@ app.use(bodyParse.urlencoded({ limit: '50mb', extended: true }))
 //   next()
 // })
 
-routers(app)
+routers(app);
 
 // mongoose.Promise = global.Promise
-const mongodb_config: string = config.get('dbConfig.mongodb')
+const mongodb_config: string = config.get("dbConfig.mongodb");
 mongoose.connect(
   mongodb_config,
   { useNewUrlParser: true, useUnifiedTopology: true },
   function (err) {
     if (err) {
-      console.log('数据库连接失败')
+      console.log("数据库连接失败");
     } else {
-      console.log('数据库连接成功')
-      const port = process.env.PORT || 5000
+      console.log("数据库连接成功");
+      const port = process.env.PORT || 5000;
       app.listen(port, () =>
         console.log(`Listening at http://localhost:${port}`)
-      )
+      );
     }
   }
-)
+);

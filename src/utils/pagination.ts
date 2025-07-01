@@ -4,13 +4,13 @@ export default {
       pageCount: Math.floor((count + size - 1) / size),
       total: count,
       page,
-      size
-    }
+      size,
+    };
   },
-  getPage: (page: number) => {
-    return page && Number(page) || 1
+  getPage: (page: number | string) => {
+    return (page && Number(page)) || 1;
   },
-  getSize: (size: number) => {
-    return size && Number(size) || 10
-  }
-}
+  getSize: (size: number | string) => {
+    return (size && Number(size)) || 10;
+  },
+};
